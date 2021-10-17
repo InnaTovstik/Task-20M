@@ -6,13 +6,10 @@ import java.util.Map;
 
 public class BookService {
 
-    private static Book book;
-    private static Author author;
-
     static void addBook(String firstName, String lastName, String title, int pagesCount) {
         if (!isDuplicateBook(title)) {
             String authorId = selectAuthorId(firstName, lastName);
-            book = new Book(title, authorId, pagesCount);
+            Book book = new Book(title, authorId, pagesCount);
             System.out.println(book);
             if (!isDuplicateBook(title)) {
                 String sql = "INSERT " +
@@ -38,7 +35,7 @@ public class BookService {
         String authorId = selectAuthorId(firstName, lastName);
         if (authorId == null) {
             System.out.println("Такого автора еще нет в БД. Заносим его данные.");
-            author = new Author(firstName, lastName);
+            Author author = new Author(firstName, lastName);
             String sql = "INSERT " +
                     "INTO Author(id, firstName, lastName)" +
                     " VALUES(?, ?, ?)";
@@ -85,7 +82,7 @@ public class BookService {
                 "ON Author.id = Book.authorId " +
                 "WHERE Book.title = ? AND Book.authorId = Author.id ";
         String titleBook = null;
-        Boolean flag = true;
+        boolean flag = true;
         try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
             pstmt.setString(1, title);
             ResultSet rs = pstmt.executeQuery();

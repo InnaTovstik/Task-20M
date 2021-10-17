@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BookServiceTest {
 
@@ -20,16 +20,14 @@ public class BookServiceTest {
 
     @Test
     public void shouldIsDuplicateBook() {
-        boolean exspected = true;
         String title = "Kateryna";
-        assertEquals(exspected, BookService.isDuplicateBook(title));
+        assertTrue(BookService.isDuplicateBook(title));
     }
 
     @Test
     public void shouldIsNotDuplicateBook() {
-        boolean exspected = false;
         String title = "Ivan";
-        assertEquals(exspected, BookService.isDuplicateBook(title));
+        assertFalse(BookService.isDuplicateBook(title));
     }
     @Test
     public void shouldselectBooksByAuthor() {
