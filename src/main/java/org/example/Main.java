@@ -42,15 +42,15 @@ public class Main {
             System.out.println("Введите количество страниц: ");
             book[3] = buffer.readLine();
         } catch (IOException ex) {
-            System.out.println("Ошибка ввода названия книги");
+            System.out.println("Ошибка ввода данных о книге");
         }
         return book;
     }
 
     public static void doIt() {
-        System.out.println("Какую операцию с базой данных хотите выполнить? Введите нужную цифру");
-        System.out.println("1 - добавить книгу в базу данных.");
-        System.out.println("2 - добавить автора в базу данных.");
+        System.out.println("Какую операцию с БД хотите выполнить? Введите нужную цифру");
+        System.out.println("1 - добавить книгу в БД.");
+        System.out.println("2 - добавить автора в БД.");
         System.out.println("3 - вернуть список книг по имени и фамилии автора.");
         try (BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in))) {
             String i = buffer.readLine();
@@ -76,8 +76,10 @@ public class Main {
                     mapBooks = BookService.selectBooksByAuthor(firstName, lastName);
                     System.out.println(mapBooks);
                     break;
+                default:
+                    System.out.println("Не выбрана ни одна операция с БД");
             }
-        } catch (IOException ex) {
+        } catch (IOException | NumberFormatException ex) {
             System.out.println("Ошибка ввода данных");
         }
     }
