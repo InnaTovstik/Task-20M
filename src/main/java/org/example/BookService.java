@@ -52,7 +52,7 @@ public class BookService {
     }
 
     //тест работает
-    static Map<String, Integer> selectBooksByAuthor(String firstName, String lastName) {
+    static Map<String, Integer> getBooksByAuthor(String firstName, String lastName) {
         String sql = "SELECT title, pagesCount " +
                 "FROM Books " +
                 "LEFT JOIN Authors " +

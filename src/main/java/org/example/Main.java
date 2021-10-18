@@ -73,7 +73,7 @@ public class Main {
                     authorInf = inputAuthorInformation();
                     firstName = authorInf[0];
                     lastName = authorInf[1];
-                    mapBooks = BookService.selectBooksByAuthor(firstName, lastName);
+                    mapBooks = BookService.getBooksByAuthor(firstName, lastName);
                     System.out.println(mapBooks);
                     break;
                 default:

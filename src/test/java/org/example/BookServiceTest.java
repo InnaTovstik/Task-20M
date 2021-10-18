@@ -36,6 +36,6 @@ public class BookServiceTest {
         exspected.put("Zibrane", 300);
         String firstName = "Taras";
         String lastName = "Shevchenko";
-        assertEquals(exspected, BookService.selectBooksByAuthor(firstName, lastName));
+        assertEquals(exspected, BookService.getBooksByAuthor(firstName, lastName));
     }
 }
