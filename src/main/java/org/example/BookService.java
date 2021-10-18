@@ -13,7 +13,7 @@ public class BookService {
             System.out.println(book);
             if (!isDuplicateBook(title)) {
                 String sql = "INSERT " +
-                        "INTO Book(id, title, authorId, pagesCount)" +
+                        "INTO Books(id, title, authorId, pagesCount)" +
                         " VALUES(?, ?, ?, ?)";
                 try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
                     pstmt.setString(1, book.getId());
@@ -37,7 +37,7 @@ public class BookService {
             System.out.println("Такого автора еще нет в БД. Заносим его данные.");
             Author author = new Author(firstName, lastName);
             String sql = "INSERT " +
-                    "INTO Author(id, firstName, lastName)" +
+                    "INTO Authors(id, firstName, lastName)" +
                     " VALUES(?, ?, ?)";
             try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
                 pstmt.setString(1, author.getId());
@@ -53,11 +53,11 @@ public class BookService {
 
     //тест работает
     static Map<String, Integer> selectBooksByAuthor(String firstName, String lastName) {
-        String sql = "SELECT Book.title, Book.pagesCount " +
-                "FROM Book " +
-                "LEFT JOIN Author " +
-                "ON Author.id = Book.authorId " +
-                "WHERE Author.firstName = ? AND Author.lastName = ? ";
+        String sql = "SELECT title, pagesCount " +
+                "FROM Books " +
+                "LEFT JOIN Authors " +
+                "ON Authors.id = Books.authorId " +
+                "WHERE Authors.firstName = ? AND Authors.lastName = ? ";
         Map<String, Integer> mapBooks = new HashMap<>();
         try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
             pstmt.setString(1, firstName);
@@ -76,11 +76,11 @@ public class BookService {
 
     //тест работает
     static boolean isDuplicateBook(String title) {
-        String sql = "SELECT Book.title " +
-                "FROM Book " +
-                "LEFT JOIN Author " +
-                "ON Author.id = Book.authorId " +
-                "WHERE Book.title = ? AND Book.authorId = Author.id ";
+        String sql = "SELECT title " +
+                "FROM Books " +
+                "LEFT JOIN Authors " +
+                "ON Authors.id = Books.authorId " +
+                "WHERE Books.title = ? AND Books.authorId = Authors.id ";
         String titleBook = null;
         boolean flag = true;
         try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
@@ -102,7 +102,7 @@ public class BookService {
     //тест работает
     static String selectAuthorId(String firstName, String lastName) {
         String sql = "SELECT id "
-                + "FROM Author " +
+                + "FROM Authors " +
                 "WHERE firstName = ? AND lastName = ?";
         String id = null;
         try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
