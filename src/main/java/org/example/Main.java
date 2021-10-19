@@ -3,13 +3,13 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Map;
+import java.util.List;
 
 public class Main {
 
     static String[] authorInf = new String[2];// firstName, lastName
     static String[] bookInf = new String[4];// firstName, lastName, title, pagesCount
-    static Map<String, Integer> mapBooks; //список книг заданного автора
+    static List<Book> listBooks ; //список книг заданного автора
 
     public static void main(String[] args) {
         System.out.println("Task 20");
@@ -73,8 +73,8 @@ public class Main {
                     authorInf = inputAuthorInformation();
                     firstName = authorInf[0];
                     lastName = authorInf[1];
-                    mapBooks = BookService.getBooksByAuthor(firstName, lastName);
-                    System.out.println(mapBooks);
+                    listBooks = BookService.getBooksByAuthor(firstName, lastName);
+                    System.out.println(listBooks);
                     break;
                 default:
                     System.out.println("Не выбрана ни одна операция с БД");

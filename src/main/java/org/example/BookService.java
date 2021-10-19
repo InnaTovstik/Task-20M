@@ -1,8 +1,8 @@
 package org.example;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookService {
 
@@ -51,31 +51,32 @@ public class BookService {
         }
     }
 
-    //тест работает
-    static Map<String, Integer> getBooksByAuthor(String firstName, String lastName) {
-        String sql = "SELECT title, pagesCount " +
+    static List<Book> getBooksByAuthor(String firstName, String lastName) {
+        String sql = "SELECT id, title, authorId, pagesCount " +
                 "FROM Books " +
                 "LEFT JOIN Authors " +
                 "ON Authors.id = Books.authorId " +
                 "WHERE Authors.firstName = ? AND Authors.lastName = ? ";
-        Map<String, Integer> mapBooks = new HashMap<>();
+        List<Book> listBooks = new ArrayList<>();
         try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                String titleBook = rs.getString(1);
-                int count = rs.getInt(2);
-                mapBooks.put(titleBook, count);
+                String bookId = rs.getString(1);
+                String titleBook = rs.getString(2);
+                String authorId = rs.getString(3);
+                int count = rs.getInt(4);
+                listBooks.add(new Book(bookId, titleBook, authorId, count));
             }
         } catch (SQLException e) {
             System.out.println("Ошибка чтения из БД");
         }
-        return mapBooks;
+        return listBooks;
     }
 
-    //тест работает
-    static boolean isDuplicateBook(String title) {
+// проверка на дублирование книги того же автора
+   static boolean isDuplicateBook(String title) {
         String sql = "SELECT title " +
                 "FROM Books " +
                 "LEFT JOIN Authors " +
@@ -99,7 +100,7 @@ public class BookService {
         return flag;
     }
 
-    //тест работает
+    //
     static String selectAuthorId(String firstName, String lastName) {
         String sql = "SELECT id "
                 + "FROM Authors " +
