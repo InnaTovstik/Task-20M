@@ -13,7 +13,10 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println("Task 20");
-        doIt();
+        System.out.println(BookService.selectAuthorId("Taras", "Shevchenko"));
+        System.out.println(BookService.getBooksByAuthor("Taras", "Shevchenko"));
+        System.out.println(BookService.getBooksByAuthor1("Taras", "Shevchenko"));
+        //doIt();
     }
 
     static String[] inputAuthorInformation() {

@@ -51,6 +51,7 @@ public class BookService {
         }
     }
 
+    // Method dosen't read from DB (with "SELECT id")
     static List<Book> getBooksByAuthor(String firstName, String lastName) {
         String sql = "SELECT id, title, authorId, pagesCount " +
                 "FROM Books " +
@@ -63,11 +64,11 @@ public class BookService {
             pstmt.setString(2, lastName);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                String bookId = rs.getString(1);
+                String id = rs.getString(1);
                 String titleBook = rs.getString(2);
                 String authorId = rs.getString(3);
                 int count = rs.getInt(4);
-                listBooks.add(new Book(bookId, titleBook, authorId, count));
+                listBooks.add(new Book(id, titleBook, authorId, count));
             }
         } catch (SQLException e) {
             System.out.println("Ошибка чтения из БД");
@@ -75,7 +76,32 @@ public class BookService {
         return listBooks;
     }
 
-// проверка на дублирование книги того же автора
+    // Method read from DB (without "SELECT id")
+    static List<Book> getBooksByAuthor1(String firstName, String lastName) {
+        String sql = "SELECT title, authorId, pagesCount " +
+                "FROM Books " +
+                "LEFT JOIN Authors " +
+                "ON Authors.id = Books.authorId " +
+                "WHERE Authors.firstName = ? AND Authors.lastName = ? ";
+        List<Book> listBooks = new ArrayList<>();
+        try (PreparedStatement pstmt = connect().prepareStatement(sql)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String titleBook = rs.getString(1);
+                String authorId = rs.getString(2);
+                int count = rs.getInt(3);
+                listBooks.add(new Book("1", titleBook, authorId, count));
+            }
+        } catch (SQLException e) {
+            System.out.println("Ошибка чтения из БД");
+        }
+        return listBooks;
+    }
+
+
+// Check to duplicate book
    static boolean isDuplicateBook(String title) {
         String sql = "SELECT title " +
                 "FROM Books " +
